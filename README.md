@@ -146,6 +146,10 @@ Not modelled or not done:
 
 ## Limits and what I would do next with real hardware
 
+- **Telegram time is counted the training-document way.** 53 + (9 + 2) x 13 = 196 bit times
+  (20.4 ms) for a 1-bit telegram. The worked example in the KNX data link layer specification
+  counts 194 bit times (20.21 ms), without the 2-bit pause after the last character and after
+  the acknowledge. The difference is 1 % and moves none of the findings.
 - **Check the arbitration result on a real line.** The finding about odd and even device numbers
   follows from the bit order in the KNX training material. I would put a bus monitor on a line,
   let two devices send back to back and see who wins.
