@@ -103,15 +103,15 @@ def latency_cdf(S, raw, out_dir):
                 va="bottom", ha="right" if k == 1 else "left", clip_on=False)
     h = S["http"]["put_one_value_optimistic"]["p50_ms"]
     ax.axvline(h, color=AXIS, linewidth=0.9)
-    ax.text(h * 0.97, 1.035, f"measured HTTP handler, {h:.1f} ms", color=MUTED, fontsize=8, va="bottom",
-            ha="left", clip_on=False)
+    ax.text(h * 0.94, 0.5, f"measured HTTP handler, {h:.1f} ms", color=MUTED, fontsize=8, va="center",
+            ha="right", rotation=90)
     ax.set_xscale("log")
-    ax.set_xlim(0.8, 1000)
+    ax.set_xlim(0.3, 1000)
     ax.set_ylim(0, 1.02)
     _style(ax, "ms after the request reached the gateway (log scale)", "share of writes to switch datapoints",
            "")
     fig.suptitle("Where the time goes: the bus, not the server", color=INK, fontsize=10.5, x=0.125, ha="left", y=1.0)
-    _legend(ax, loc="center left", bbox_to_anchor=(0.14, 0.5))
+    _legend(ax, loc="upper center", bbox_to_anchor=(0.5, -0.14))
     _save(fig, out_dir, "fig2_latency_cdf.png")
 
 
@@ -206,6 +206,7 @@ def refresh_trade(S, out_dir):
         lab = "no refresh" if r["refresh_period_s"] == 0 else f"every {r['refresh_period_s']:.0f} s"
         ax.annotate(lab, (xx, yy), textcoords="offset points", xytext=(7, 6), fontsize=8.5, color=INK2)
     ax.set_yscale("log")
+    ax.set_xlim(0, max(x) * 1.14)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%g"))
     ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     _style(ax, "telegrams per second on the bus (traffic + status read-back)",

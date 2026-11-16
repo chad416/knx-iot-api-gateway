@@ -63,6 +63,7 @@ class CacheEntry:
     bus_value: Any = None                 # last value heard from the device, whatever the design
     foreign_seq: int = 0                  # commands from other bus devices heard on the command address
     foreign_at: Optional[int] = None      # such a command was heard and its status has not come yet
+    foreign_value: Any = None
     pending_target: Any = None
     pending_n: int = 0
 
@@ -86,6 +87,7 @@ class Op:
     outcome: Optional[str] = None
     v_at_tx: int = 0
     f_at_tx: int = 0
+    v_done: int = 0                       # cache version at the moment this op was confirmed
     foreign_after_con: bool = False
     timer: Any = None
     cb: Optional[Callable[["Op"], None]] = None
@@ -437,6 +439,7 @@ class GatewayCore(Station):
             e = self.cache[d.id]
             e.foreign_seq += 1
             e.foreign_at = self.sched.now
+            e.foreign_value = f.value
             for op in self._await.get(d.id, ()):
                 if not _same(op.value, f.value):
                     op.foreign_after_con = True       # a different command follows ours on the bus
@@ -476,6 +479,7 @@ class GatewayCore(Station):
             lst.remove(op)
         if not op.is_read:
             e = self.cache[op.dp.id]
+            op.v_done = e.version
             e.pending_n = max(0, e.pending_n - 1)
             if self.cfg.design == "optimistic" and outcome == "bus_nack" and e.bus_value is not None:
                 self._set(op.dp, e.bus_value, "revert", confirmed=False)
@@ -490,6 +494,15 @@ class GatewayCore(Station):
             op.cb(op)
         b = op.batch
         if b is not None and not b.answered and all(o.outcome is not None for o in b.ops):
+            if self.cfg.design == "versioned":
+                # A batch is answered when its last item is confirmed. An item confirmed earlier
+                # may have been changed since; the gateway heard that, so it says so.
+                for o in b.ops:
+                    e = self.cache[o.dp.id]
+                    if o.outcome == "confirmed" and (e.version != o.v_done or (
+                            self._foreign_open(o.dp, e) and not _same(e.foreign_value, o.value))):
+                        o.outcome = "superseded"
+                        self.stats["superseded"] += 1
             outs = [o.outcome for o in b.ops]
             items = [self._item(o) for o in b.ops]
             if all(o in OK_OUTCOMES for o in outs):

@@ -18,6 +18,6 @@ First version.
   subscriptions with signed notifications, WebSocket notifications, audit log with hash chain.
 - Studies: race scan, lost-update scan, mixed traffic for three designs, loss and reaction-time
   sensitivity, refresh trade, scene burst, write-rate sweep, polling and flooding clients.
-- 157 tests: bus model against published timing, core, API contract against the official JSON
+- 159 tests: bus model against published timing, core, API contract against the official JSON
   schemas, one scenario per anomaly, security controls.
 - Small React client that shows device state next to gateway state, with screenshots.

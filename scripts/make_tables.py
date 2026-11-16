@@ -49,7 +49,7 @@ def t_designs(S: dict, profile: str) -> str:
         lambda r: f"{r['writes']['latency_confirmed_dimmer_value_ms']['p50'] / 1000:.1f} / {r['writes']['latency_confirmed_blind_position_ms']['p50'] / 1000:.1f}")
     row("Values answered 'done' before the device had acted",
         lambda r: f"{r['writes']['ack_before_effect']} of {r['writes']['ok_items']}")
-    row("Answered 'done', device never took the value (switches only)", lambda r: str(r["writes"]["ack_never_applied_fast"]))
+    row("Answered 'done', own telegram was never executed (switches only)", lambda r: str(r["writes"]["ack_never_applied_fast"]))
     row("Answered 'done', device was already in another state", lambda r: str(r["writes"]["ack_untrue_at_response"]))
     row("Answered 409 conflict", lambda r: str(r["writes"]["conflict"]))
     row("Answered 504, although the device did switch", lambda r: str(r["writes"]["failed_but_applied"]))
@@ -103,12 +103,14 @@ def t_sweep(S: dict) -> str:
 
 
 def t_loss(S: dict) -> str:
-    rows = ["| Chance that one station misses one frame | D1: 'done' but never applied | D2: 504 although applied | D3: 504 although applied | D2 longest wrong cache (s) | D3 longest wrong cache (s) | Repetitions per 1000 telegrams |",
-            "|---|---|---|---|---|---|---|"]
+    rows = ["| Chance that one station misses one frame | D1: 'done' but never applied | D2: 504 although applied | D3: 504 although applied | D2 longest wrong cache (s) | D3 longest wrong cache (s) | Real changes not told, D1 / D2 / D3 | Repetitions per 1000 telegrams |",
+            "|---|---|---|---|---|---|---|---|"]
     for p, r in S["loss_sensitivity"].items():
         o, c, v = r["optimistic"], r["confirmed"], r["versioned"]
         rows.append(f"| {float(p):g} | {o['ok_but_never_applied_fast']} of {o['writes_answered_ok']} | {c['failed_but_applied']} | {v['failed_but_applied']} | "
-                    f"{c['longest_stale_s']:.0f} | {v['longest_stale_s']:.0f} | {per(c['repetitions'], c['telegrams'], 1000, 1)} |")
+                    f"{c['longest_stale_s']:.0f} | {v['longest_stale_s']:.0f} | "
+                    f"{o['missed_notifications']} / {c['missed_notifications']} / {v['missed_notifications']} | "
+                    f"{per(c['repetitions'], c['telegrams'], 1000, 1)} |")
     return "\n".join(rows)
 
 

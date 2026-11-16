@@ -273,10 +273,10 @@ def rmw_scan(design: str, taus_ms: list[float], seeds: int = 3, gw: Optional[dic
                 c.read([d], got)
 
             a, b = SimClient(w, "A", net_ms=5.0), SimClient(w, "B", net_ms=60.0)
-            t0 = w.sched.now + sec(0.5)
+            t0 = w.sched.now + sec(1.5)             # room for the second client to start up to 1.5 s earlier
             w.sched.at(t0, step, a)
             w.sched.at(t0 + ms(tau), step, b)
-            w.run(8.0)
+            w.run(10.0)
             final = w.inst.truth.last(d.key)
             agg["n"] += 1
             if _same(final, d.dpt.quantise(80.0)):

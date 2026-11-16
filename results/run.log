@@ -1,7 +1,20 @@
+power throttling off: True
 [   0.0 s] bus numbers and model validation
 [   0.0 s] HTTP handler time
-[   7.7 s] race scan
-[  19.0 s] lost-update scan
-[  22.4 s] mixed traffic, three designs
-[  85.9 s]   office optimistic
-[ 155.6 s]   office confirmed
+[   5.3 s] race scan
+[  12.5 s] lost-update scan
+[  16.0 s] mixed traffic, three designs
+[  38.0 s]   office optimistic
+[  56.9 s]   office confirmed
+[  75.6 s]   office versioned
+[  92.3 s]   contended optimistic
+[ 105.2 s]   contended confirmed
+[ 116.0 s]   contended versioned
+[ 116.0 s] loss sensitivity
+[ 136.0 s] refresh period trade
+[ 180.6 s] actuator reaction time sensitivity
+[ 183.5 s] capacity: scene burst
+[ 186.3 s] capacity: write rate sweep
+[ 190.7 s] capacity: polling and flooding
+[ 191.3 s] figures
+[ 193.2 s] wrote results/summary.json

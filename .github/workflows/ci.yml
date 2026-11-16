@@ -16,6 +16,8 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Unit, contract, scenario and security tests
         run: python -m pytest -q
+      - name: Tables in README and DOSSIER match results/summary.json
+        run: python scripts/make_tables.py --check
       - name: Results script (short run, same code paths as the full run)
         run: python scripts/run_all.py --quick
       - name: Checks on the regenerated numbers

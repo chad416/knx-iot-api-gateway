@@ -56,6 +56,29 @@ def test_a2_optimistic_always_answers_before_the_device_acted():
     assert all(r["ok_not_yet"] == r["n"] for r in res)
 
 
+def _scene_then_press(design):
+    """Two lights in one call; a wall switch turns the first one off again before the second is confirmed."""
+    w = world(design, polite=True, pace_util=0.4)
+    a, b = w.inst.dp("room1.light"), w.inst.dp("room2.light")
+    box = {}
+    w.gw.write("scene", [(a.id, True, None), (b.id, True, None)], lambda r: box.update(r=r, t=w.sched.now))
+    w.sched.at(ms(38), w.inst.press, "room1.light", False)       # first light is confirmed at about 35 ms
+    w.run(2)
+    return w, box
+
+
+def test_a2_batch_answer_is_as_old_as_its_first_item_in_the_confirmed_design():
+    w, box = _scene_then_press("confirmed")
+    assert box["r"].status == "ok"
+    assert w.inst.truth.at("room1.light", box["t"]) is False       # told "on", it is off
+
+
+def test_a2_versioned_design_checks_every_item_again_before_it_answers_a_batch():
+    w, box = _scene_then_press("versioned")
+    assert box["r"].status == "conflict"
+    assert [i["outcome"] for i in box["r"].items] == ["superseded", "confirmed"]
+
+
 # ---- A3 two API clients interleave --------------------------------------------------------
 def test_a3_confirmed_cache_loses_an_update_when_two_clients_step_a_dimmer():
     res = rmw_scan("confirmed", [100.0], seeds=3)[0]
