@@ -237,6 +237,7 @@ class Observer:
         lat_effect: list[int] = []
         lat_conf: list[int] = []
         lead: list[int] = []
+        lat_slow: dict[str, list[int]] = {"dim_value": [], "blind_pos": []}
         for r in self.writes:
             c["writes"] += 1
             if r.status is None or r.t_resp is None:
@@ -275,6 +276,8 @@ class Observer:
                     c["failed_but_applied"] += 1
                 elif r.status == "conflict" and app is not None:
                     c["conflict_but_applied"] += 1
+                if d.kind in lat_slow and oid in self.evidence:
+                    lat_slow[d.kind].append(self.evidence[oid] - r.t_gw_in)
                 if d.kind in FAST and app is not None:
                     lat_effect.append(app[0] - r.t_gw_in)
                     if oid in self.evidence:
@@ -284,6 +287,10 @@ class Observer:
         c["latency_effect_ms"] = _pcts(lat_effect)
         c["latency_confirmed_ms"] = _pcts(lat_conf)
         c["ack_lead_ms"] = _pcts(lead)
+        c["latency_confirmed_dimmer_value_ms"] = _pcts(lat_slow["dim_value"])
+        c["latency_confirmed_blind_position_ms"] = _pcts(lat_slow["blind_pos"])
+        self.raw = {"gateway": [x / 1e6 for x in lat_gw], "effect": [x / 1e6 for x in lat_effect],
+                    "confirmed": [x / 1e6 for x in lat_conf]}
         return c
 
 

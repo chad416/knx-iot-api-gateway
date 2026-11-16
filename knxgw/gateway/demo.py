@@ -17,6 +17,7 @@ from ..simtime import ms
 def add_demo_routes(app: FastAPI, rt: Any) -> None:
     inst, core = rt.inst, rt.core
     cid, secret = rt.auth.register("demo web client", {"read", "write", "manage"})
+    state: dict = {}
 
     @app.get("/demo/config")
     async def config() -> JSONResponse:
@@ -43,7 +44,7 @@ def add_demo_routes(app: FastAPI, rt: Any) -> None:
             "truth": {d.key: d.dpt.fmt(inst.truth.last(d.key)) for d in inst.datapoints.values()},
             "bus": {"telegrams": st.telegrams, "repetitions": st.repetitions,
                     "load": round(st.busy_ns / max(1, rt.sched.now), 4)},
-            "queue": core.q_len, "stats": core.stats})
+            "queue": core.q_len, "stats": core.stats, "race": state.get("race")})
 
     @app.get("/demo/buslog")
     async def buslog(after: int = 0) -> JSONResponse:
@@ -76,6 +77,7 @@ def add_demo_routes(app: FastAPI, rt: Any) -> None:
         lead = ms(max(0.0, -tau))
         out: dict = {"key": key, "api_writes": d.dpt.fmt(cur), "wall_presses": d.dpt.fmt(not cur),
                      "tau_ms": tau, "log_after": len(rt.buslog)}
+        state["race"] = out
         rt.sched.after(lead + ms(max(0.0, tau)), inst.press, key, not cur, "wall:race")
         rt.sched.after(lead, core.write, "demo-race", [(d.id, cur, None)],
                        lambda res: out.__setitem__("api_result", res.status))

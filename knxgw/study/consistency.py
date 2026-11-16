@@ -172,7 +172,7 @@ class MixedTraffic:
 
 
 def run_mixed(design: str, profile: str, hours: float, seed: int = 1,
-              gw: Optional[dict] = None, inst: Optional[dict] = None) -> dict:
+              gw: Optional[dict] = None, inst: Optional[dict] = None, keep_raw: bool = False) -> dict:
     world = World(design, seed, gw, inst)
     traffic = MixedTraffic(world, profile, seed)
     world.run(hours * 3600.0)
@@ -195,6 +195,8 @@ def run_mixed(design: str, profile: str, hours: float, seed: int = 1,
                             "p99": round(wl[int(len(wl) * 0.99)], 2) if wl else 0,
                             "max": round(wl[-1], 2) if wl else 0},
     }
+    if keep_raw:
+        res["_raw"] = obs.raw
     return res
 
 

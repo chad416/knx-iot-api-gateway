@@ -1,0 +1,7 @@
+[   0.0 s] bus numbers and model validation
+[   0.0 s] HTTP handler time
+[   7.7 s] race scan
+[  19.0 s] lost-update scan
+[  22.4 s] mixed traffic, three designs
+[  85.9 s]   office optimistic
+[ 155.6 s]   office confirmed
