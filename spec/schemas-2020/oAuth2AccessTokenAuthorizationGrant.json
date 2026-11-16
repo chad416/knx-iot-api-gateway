@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `oAuth2AccessTokenAuthorizationGrant.json`",
+  "required": [
+    "grant_type",
+    "code"
+  ],
+  "properties": {
+    "grant_type": {
+      "description": "OAuth 2.0 **grant_type** `authorization_code`, to generate an access token",
+      "type": "string",
+      "const": "authorization_code"
+    },
+    "code": {
+      "description": "same code as it was generated from the authorization server as part of the authorization response call",
+      "type": "string"
+    },
+    "redirect_uri": {
+      "description": "same URI as it was submitted to the authorization server as part of the authorization request call",
+      "type": "string",
+      "format": "uri"
+    },
+    "client_id": {
+      "description": "generic id, may be needed in dependence of the established client authorization with the authorization server",
+      "type": "string"
+    }
+  }
+}

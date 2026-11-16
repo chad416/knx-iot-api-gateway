@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "nullable": true,
+  "description": "A definition for a datapoint object including:\n- type/ id\n- attributes\n- meta information on the datapoint \n- relationships to other relevant resources\n",
+  "allOf": [
+    {
+      "$ref": "./DatapointTypeAndId.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "attributes",
+        "relationships"
+      ],
+      "properties": {
+        "attributes": {
+          "$ref": "./DatapointItemAttributes.json"
+        },
+        "meta": {
+          "$ref": "./EntityItemMetaInformation.json"
+        },
+        "relationships": {
+          "$ref": "./DatapointItemRelationships.json"
+        }
+      }
+    }
+  ]
+}

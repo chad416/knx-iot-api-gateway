@@ -1,0 +1,140 @@
+{
+  "type": "object",
+  "description": "The JSON API attribute member, expressing datapoint properties.",
+  "allOf": [
+    {
+      "$ref": "./Title.json"
+    },
+    {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "The datapoint definition for an enumerated type.",
+          "required": [
+            "enum",
+            "valueType"
+          ],
+          "properties": {
+            "valueType": {
+              "type": "string",
+              "description": "The type of the value of this Datapoint, here used together with an enumeration, it must use *string*",
+              "const": "string"
+            },
+            "value": {
+              "type": "string",
+              "description": "The value of this datapoint, covers enumeration values. The 'value' member needs to be omitted if no value is present."
+            },
+            "enum": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "List of valid enumerations for the datapoint value, such as [a,b,c] or [true,false]. As a note, also the boolean type (true/false, up/down, ...) is an enumeration."
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "The datapoint definition for a numbered type.",
+          "required": [
+            "unit",
+            "valueType"
+          ],
+          "properties": {
+            "valueType": {
+              "type": "string",
+              "description": "The type of the value of this Datapoint, here used together with a number, it must use *string*",
+              "const": "string"
+            },
+            "value": {
+              "type": "string",
+              "description": "The value of this datapoint, covers number values. The 'value' member needs to be omitted if no value is present."
+            },
+            "unit": {
+              "type": "string",
+              "description": "The datapoint unit."
+            },
+            "minimum": {
+              "type": "number",
+              "description": "Expresses an applicative minimal (int/float type) value (the minimum SHOULD be treated as greater or equal for a Datapoint value).",
+              "nullable": true
+            },
+            "maximum": {
+              "type": "number",
+              "description": "Expresses an applicative maximal (int/float type) value (the maximum SHOULD be treated as lower or equal for a Datapoint value).",
+              "nullable": true
+            },
+            "resolution": {
+              "type": "number",
+              "description": "Expresses a mapping to the next possible datapoint value as for a (int/float type) value, values larger than unsigned 16 bit makes no practical sense.",
+              "nullable": true,
+              "exclusiveMinimum": 0,
+              "maximum": 65536
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "The datapoint definition for an array type, combining numbered/enumeration types.",
+          "required": [
+            "valueType"
+          ],
+          "properties": {
+            "valueType": {
+              "type": "string",
+              "description": "The type of the value of this Datapoint, here used together with an array, it must use *object*",
+              "const": "object"
+            },
+            "value": {
+              "type": "array",
+              "description": "The values of this datapoint, covers an array of string values (numbers are also handled as strings). The 'value' member needs to be omitted if no value is present.",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Represents the description of a datapoint.",
+          "nullable": true
+        },
+        "comment": {
+          "type": "string",
+          "description": "A comment expressed in the MaC from the installer, in KNX for GA present but not for a GO.",
+          "nullable": true
+        },
+        "readable": {
+          "type": "boolean",
+          "description": "Specifies if a datapoint can be read from a client.",
+          "default": true,
+          "nullable": true
+        },
+        "writable": {
+          "type": "boolean",
+          "description": "Specifies if a datapoint can be written from a client.",
+          "default": false,
+          "nullable": true
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The time where this value was read or written at the server. The 'timestamp' member needs to be omitted if no value is present.",
+          "format": "date-time"
+        },
+        "datapointType": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Additional type information of the datapoint, as URN and/or IRI (the latter with namespace prefix)",
+            "nullable": true
+          }
+        }
+      }
+    }
+  ]
+}

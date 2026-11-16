@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `SubscriptionUpdate.json`",
+  "properties": {
+    "data": {
+      "allOf": [
+        {
+          "$ref": "./SubscriptionTypeAndId.json"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "attributes": {
+              "$ref": "./SubscriptionItemAttributes.json"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

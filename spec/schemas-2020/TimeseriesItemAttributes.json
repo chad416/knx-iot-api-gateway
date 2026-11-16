@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "description": "The JSON API attribute member, expressing timeseries properties.",
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "description": "The time where this value was written at the server.",
+      "format": "date-time"
+    },
+    "value": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Covers enumeration/numbered/string values. Is omitted if no value is present."
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Covers an array of string values. Is omitted if no value is present."
+        }
+      ]
+    }
+  }
+}

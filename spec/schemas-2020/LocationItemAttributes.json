@@ -1,0 +1,22 @@
+{
+  "allOf": [
+    {
+      "$ref": "./Title.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Represents the description of a location.",
+          "nullable": true
+        },
+        "comment": {
+          "type": "string",
+          "description": "A comment expressed in the MaC from the installer.",
+          "nullable": true
+        }
+      }
+    }
+  ]
+}

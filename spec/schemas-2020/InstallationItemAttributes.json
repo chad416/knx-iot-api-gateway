@@ -1,0 +1,38 @@
+{
+  "allOf": [
+    {
+      "$ref": "./Title.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "description": "A comment expressed in the MaC from the installer for this installation.",
+          "nullable": true
+        },
+        "contractNumber": {
+          "type": "string",
+          "description": "The contract number of the installation.",
+          "nullable": true
+        },
+        "lastModified": {
+          "type": "string",
+          "description": "Last modification of the installation, date/ time in ISO 8601/ RFC 3339 format, <https://tools.ietf.org/html/rfc3339#section-5.6>",
+          "nullable": true,
+          "format": "date-time"
+        },
+        "projectInstallationNumber": {
+          "type": "string",
+          "description": "A number expressed in the MaC from the installer for this installation.",
+          "nullable": true
+        },
+        "state": {
+          "type": "string",
+          "description": "A generic state expressed in the MaC from the installer for this installation.",
+          "nullable": true
+        }
+      }
+    }
+  ]
+}

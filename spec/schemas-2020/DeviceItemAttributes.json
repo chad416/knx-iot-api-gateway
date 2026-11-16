@@ -1,0 +1,73 @@
+{
+  "allOf": [
+    {
+      "$ref": "./Title.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Represents the description of a device.",
+          "nullable": true
+        },
+        "comment": {
+          "type": "string",
+          "description": "A comment expressed in the MaC from the installer.",
+          "nullable": true
+        },
+        "orderNumber": {
+          "type": "string",
+          "description": "order number string of this device (derived from the product)",
+          "nullable": true
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "the producer/manufacturer of the device, string",
+          "nullable": true
+        },
+        "lastModified": {
+          "type": "string",
+          "description": "last device modification, date/ time in ISO 8601/ RFC 3339 format, <https://tools.ietf.org/html/rfc3339#section-5.6>",
+          "nullable": true
+        },
+        "lastDownloaded": {
+          "type": "string",
+          "description": "last device download, date/ time in ISO 8601/ RFC 3339 format, <https://tools.ietf.org/html/rfc3339#section-5.6>",
+          "nullable": true
+        },
+        "currentDateTime": {
+          "type": "string",
+          "description": "The current system time of the device, reflecting the time which the underlying system is using, date/ time in ISO 8601/ RFC 3339 format, <https://tools.ietf.org/html/rfc3339#section-5.6>",
+          "nullable": true,
+          "format": "date-time"
+        },
+        "serialNumber": {
+          "type": "string",
+          "description": "By KNX specified KNX Serial Number of the device, set during manufacturing process",
+          "nullable": true
+        },
+        "individualAddress": {
+          "type": "string",
+          "description": "device address as part of the installation, set in MaC during configuration",
+          "nullable": true
+        },
+        "version": {
+          "type": "object",
+          "properties": {
+            "firmware": {
+              "type": "string",
+              "description": "device SW version",
+              "nullable": true
+            },
+            "hardware": {
+              "type": "string",
+              "description": "device HW version",
+              "nullable": true
+            }
+          }
+        }
+      }
+    }
+  ]
+}

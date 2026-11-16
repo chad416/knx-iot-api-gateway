@@ -1,0 +1,125 @@
+{
+  "type": "object",
+  "description": "The array items, expressing datafield properties.",
+  "allOf": [
+    {
+      "$ref": "./Title.json"
+    },
+    {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "The datafield definition for an enumerated type.",
+          "required": [
+            "enumValueMap"
+          ],
+          "properties": {
+            "enumValueMap": {
+              "type": "array",
+              "description": "List of key/value pairs, to map several (string 'based') enumeration values with its corresponding number values.",
+              "items": {
+                "minItems": 1,
+                "uniqueItems": true,
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number",
+                  "format": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "The datafield definition for a numbered type.",
+          "required": [
+            "unit",
+            "minimum",
+            "maximum",
+            "resolution",
+            "integer"
+          ],
+          "properties": {
+            "unit": {
+              "type": "string",
+              "description": "The (variable) unit of a datafield for a numbered type."
+            },
+            "minimum": {
+              "type": "number",
+              "description": "Expresses a minimal value range for a standardized DPT (SHOULD be treated as 'ge'). May be a float or integer, hence this no format is defined."
+            },
+            "maximum": {
+              "type": "number",
+              "description": "Expresses a maximal value range for a standardized DPT (SHOULD be treated as 'le'). May be a float or integer, hence this no format is defined."
+            },
+            "resolution": {
+              "type": "number",
+              "description": "Expresses a scaling factor to limit a datapoint value to a reasonable technical range, as part of a standardized DPT (integer/float) value (SHOULD be treated as '> 0'. Values larger than unsigned 16 bit makes no practical sense.",
+              "exclusiveMinimum": 0,
+              "maximum": 65536
+            },
+            "integer": {
+              "type": "boolean",
+              "description": "Expresses with a boolean the number format of a datapoint value as an integer (true) or a float (false).",
+              "default": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "The datafield definition for a date/time type.",
+          "required": [
+            "unit"
+          ],
+          "properties": {
+            "unit": {
+              "type": "string",
+              "description": "The (fixed) unit of a datafield for a date/time type.",
+              "const": "qudt:ISO8601-UTCDateTime-BasicFormat"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "The datafield definition for a string/char type.",
+          "required": [
+            "charset",
+            "maxLength"
+          ],
+          "properties": {
+            "charset": {
+              "type": "string",
+              "description": "Expresses the possible values of the charset scheme.",
+              "enum": [
+                "iso-8859-1",
+                "us-ascii",
+                "utf-8"
+              ]
+            },
+            "maxLength": {
+              "type": "integer",
+              "format": "int32",
+              "description": "Expresses the maximum value length in bytes for a string/char, which is not necessarily the same as the current value length (the maximum is limited to a signed 32 bit).",
+              "minimum": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Represents the description of a datafield.",
+          "nullable": true
+        },
+        "value": {
+          "type": "string",
+          "description": "The value of this datafield. The 'value' member needs to be omitted if no value is present."
+        }
+      }
+    }
+  ]
+}

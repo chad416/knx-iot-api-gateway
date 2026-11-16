@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "description": "The JSON API reference member, expressing relations to \n- a `datafieldDatapoints` member, a relative reference to datapoints, using this datafield.\n",
+  "required": [
+    "datafieldDatapoints"
+  ],
+  "properties": {
+    "datafieldDatapoints": {
+      "$ref": "./relatedLinksMember.json"
+    }
+  }
+}

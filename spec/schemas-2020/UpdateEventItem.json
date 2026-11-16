@@ -1,0 +1,89 @@
+{
+  "oneOf": [
+    {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "./DatapointTypeAndId.json"
+        },
+        {
+          "type": "object",
+          "required": [
+            "links",
+            "attributes"
+          ],
+          "properties": {
+            "links": {
+              "$ref": "./UpdateEventItemLinks.json"
+            },
+            "attributes": {
+              "type": "object",
+              "required": [
+                "value",
+                "timestamp"
+              ],
+              "description": "The datapoint value and event time occurrence.",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "description": "value as string, no datapoint format definition included"
+                },
+                "timestamp": {
+                  "type": "string",
+                  "description": "date/ time in ISO 8601/ RFC 3339 format, <https://tools.ietf.org/html/rfc3339#section-5.6>",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "./NodeTypeAndId.json"
+        },
+        {
+          "type": "object",
+          "required": [
+            "links"
+          ],
+          "properties": {
+            "links": {
+              "$ref": "./UpdateEventItemLinks.json"
+            },
+            "attributes": {
+              "type": "object",
+              "description": "The changed node attributes."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "./InstallationTypeAndId.json"
+        },
+        {
+          "type": "object",
+          "required": [
+            "links"
+          ],
+          "properties": {
+            "links": {
+              "$ref": "./UpdateEventItemLinks.json"
+            },
+            "attributes": {
+              "type": "object",
+              "description": "The changed installation attributes."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

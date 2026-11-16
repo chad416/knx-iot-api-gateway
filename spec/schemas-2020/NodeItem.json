@@ -1,0 +1,89 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `NodeItem.json`",
+  "nullable": true,
+  "allOf": [
+    {
+      "$ref": "./NodeTypeAndId.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "attributes"
+      ],
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "required": [
+            "title",
+            "deviceOrServiceName",
+            "vendorOrProvider"
+          ],
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "node name"
+            },
+            "deviceOrServiceName": {
+              "type": "string",
+              "description": "interface service type"
+            },
+            "vendorOrProvider": {
+              "type": "string",
+              "description": "interface vendor or provider name, should corresponds to name used as part of the **namespace** used for KNX vendor attributes"
+            },
+            "description": {
+              "type": "string",
+              "description": "verbose interface description",
+              "nullable": true
+            },
+            "lastModified": {
+              "type": "string",
+              "description": "Last modification of the installation, date/ time in ISO 8601/ RFC 3339 format, <https://tools.ietf.org/html/rfc3339#section-5.6>",
+              "nullable": true,
+              "format": "date-time"
+            },
+            "currentDateTime": {
+              "type": "string",
+              "description": "The current system time of the node, reflecting the time which the underlying system is using, date/ time in ISO 8601/ RFC 3339 format, <https://tools.ietf.org/html/rfc3339#section-5.6>",
+              "nullable": true,
+              "format": "date-time"
+            },
+            "version": {
+              "type": "object",
+              "properties": {
+                "server": {
+                  "type": "string",
+                  "description": "interface API version (of device or service resp. node, not the API)",
+                  "nullable": true
+                }
+              }
+            },
+            "maxSubscriptions": {
+              "type": "integer",
+              "description": "The maximal number of total subscriptions a node supports at a time (regardless of an implemented WebSocket and/or HTTP subscription)",
+              "nullable": false
+            },
+            "currentSubscriptions": {
+              "type": "integer",
+              "description": "The current number of subscriptions a node supports at a time (regardless of an implemented WebSocket and/or HTTP subscription)",
+              "nullable": false
+            }
+          }
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "typedescription": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "relationships": {
+          "$ref": "./NodeItemRelationships.json"
+        }
+      }
+    }
+  ]
+}

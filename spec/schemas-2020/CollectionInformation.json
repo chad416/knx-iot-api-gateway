@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `CollectionInformation.json`",
+  "required": [
+    "collection"
+  ],
+  "properties": {
+    "nodata": {
+      "type": "string",
+      "description": "If no item is present in the collection, tis (optional) element may express a reason for that."
+    },
+    "collection": {
+      "type": "object",
+      "description": "Information on the skipped pages, number of returned items and the total number of collection items at the server.",
+      "required": [
+        "number",
+        "size",
+        "total"
+      ],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 0,
+          "format": "int32",
+          "default": 0,
+          "description": "The number of pages skipped in the response that may be limited with a request query parameter (limited to a maximum of signed 32 bit)."
+        },
+        "size": {
+          "type": "integer",
+          "description": "The actual number of items returned in the response that may be limited with a request query parameter."
+        },
+        "total": {
+          "type": "integer",
+          "description": "The total numbers of existing items in the whole collection at the server."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "description": "A definition for a datafield object including:\n- type/ id\n- on the datafield \n- relationships to other relevant resources\n",
+  "allOf": [
+    {
+      "$ref": "./DatafieldTypeAndId.json"
+    },
+    {
+      "$ref": "./DatafieldItemAttributes.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "relationships"
+      ],
+      "properties": {
+        "relationships": {
+          "$ref": "./DatafieldItemRelationships.json"
+        }
+      }
+    }
+  ]
+}

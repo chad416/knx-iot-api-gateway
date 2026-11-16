@@ -1,0 +1,34 @@
+{
+  "description": "To the payload corresponding JSON schema file is `Errors.json`, an array of error items, included in the JSON API `errors` member. \nEach error item must be conform to RFC 7807. It may contain additional information such as: \n- a JSON API `links` member, pointing to absolute/ relative URL with error details  \n- a vendor specific information\n",
+  "type": "object",
+  "properties": {
+    "errors": {
+      "type": "array",
+      "items": {
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "description": "Error title or HTTP status phrase.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status code as string, defined by JSON API.",
+            "type": "string"
+          },
+          "detail": {
+            "description": "Detailed description of the error.",
+            "type": "string"
+          },
+          "links": {
+            "description": "Absolute URL reference to a detailed description of the error.",
+            "type": "string",
+            "format": "url"
+          }
+        }
+      }
+    }
+  }
+}

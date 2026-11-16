@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "required": [
+    "type",
+    "id"
+  ],
+  "properties": {
+    "id": {
+      "description": "Locally unique resource identifier, preferably an UUID.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "type": {
+      "description": "The resource type of the entity.",
+      "type": "string",
+      "const": "datafield"
+    }
+  }
+}

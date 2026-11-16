@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `SubscriptionCollection.json`",
+  "required": [
+    "meta",
+    "data"
+  ],
+  "properties": {
+    "meta": {
+      "$ref": "./CollectionInformation.json"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "./SubscriptionItem.json"
+      }
+    }
+  }
+}

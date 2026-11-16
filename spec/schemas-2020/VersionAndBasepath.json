@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "description": "API version and URL base path information:\n- `version`  > major.minor.patch, such as 2.0.0 (see Semantic Versioning Specification)\n- `base` > relative URL base part (RFC 3986), extends as a header part all API endpoint urls, depends on the API version, may also include a URI-Template  \n",
+  "required": [
+    "version",
+    "base"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "base": {
+      "type": "string"
+    },
+    "templates": {
+      "type": "object",
+      "description": "URI-Template, defining **each** in the URL used varspec variable",
+      "additionalProperties": {
+        "$ref": "./URI-Template.json"
+      }
+    }
+  }
+}

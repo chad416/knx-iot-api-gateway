@@ -1,0 +1,38 @@
+{
+  "allOf": [
+    {
+      "$ref": "./DatapointTypeAndId.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "attributes"
+      ],
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "description": "The datapoint value type, covers enumeration/numbered/string values. Is omitted if no value is present."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "The datapoint value type, covers an array of string values (numbers are also handled as strings). Is omitted if no value is present."
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

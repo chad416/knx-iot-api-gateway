@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "required": [
+    "values"
+  ],
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "rel": {
+      "type": "string"
+    },
+    "values": {
+      "type": "array",
+      "description": "URI-Template, defining the values for a varspec variable.",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

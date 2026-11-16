@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `DatapointCollectionWithValues.json`",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "./DatapointCollectionWithValuesItem.json"
+      }
+    }
+  }
+}

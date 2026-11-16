@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "description": "Some references expressing relations to \n- a `timeseriesDatapoint` member, a relative reference to the datapoint, where this time series item is related to\n",
+  "required": [
+    "timeseriesDatapoint"
+  ],
+  "properties": {
+    "timeseriesDatapoint": {
+      "$ref": "./relatedLinksMember.json"
+    }
+  }
+}

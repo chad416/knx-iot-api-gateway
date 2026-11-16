@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "description": "A definition for a function object including:\n- type/ id\n- attributes\n- meta information on the function \n- relationships to other relevant resources\n",
+  "allOf": [
+    {
+      "$ref": "./FunctionTypeAndId.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "attributes",
+        "relationships"
+      ],
+      "properties": {
+        "attributes": {
+          "$ref": "./FunctionItemAttributes.json"
+        },
+        "meta": {
+          "$ref": "./EntityItemMetaInformation.json"
+        },
+        "relationships": {
+          "$ref": "./FunctionItemRelationships.json"
+        }
+      }
+    }
+  ]
+}

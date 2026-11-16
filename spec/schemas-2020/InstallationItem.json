@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "description": "A definition for a installation object including:\n- type/ id\n- attributes\n- meta information including links to other relevant resources\n- relationships information including links\n",
+  "allOf": [
+    {
+      "$ref": "./InstallationTypeAndId.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "attributes"
+      ],
+      "properties": {
+        "attributes": {
+          "$ref": "./InstallationItemAttributes.json"
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "typedescription": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "relationships": {
+          "$ref": "./InstallationItemRelationships.json"
+        }
+      }
+    }
+  ]
+}

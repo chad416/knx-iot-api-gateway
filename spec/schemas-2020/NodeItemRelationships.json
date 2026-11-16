@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "description": "The JSON API reference member, expressing relations to \n- a `nodeSubscriptions` member, a relative reference to all subscriptions where this datapoint is included in\n",
+  "properties": {
+    "nodeSubscriptions": {
+      "$ref": "./relatedLinksMember.json"
+    }
+  }
+}

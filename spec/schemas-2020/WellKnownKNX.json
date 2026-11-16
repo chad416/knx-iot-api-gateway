@@ -1,0 +1,82 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `WellKnownKNX.json`",
+  "required": [
+    "api"
+  ],
+  "properties": {
+    "api": {
+      "$ref": "./VersionAndBasepath.json"
+    },
+    "supportedversions": {
+      "type": "array",
+      "description": "Additional supported (older) API versions if any. If expressed the included members are mandatory.",
+      "items": {
+        "$ref": "./VersionAndBasepath.json"
+      }
+    },
+    "links": {
+      "type": "array",
+      "description": "References to API entry points (from this API and vendor specific).",
+      "items": {
+        "type": "object",
+        "required": [
+          "href",
+          "contenttype"
+        ],
+        "properties": {
+          "href": {
+            "description": "Relative URL resource path of an useful API entry point, the final URL depends from the API version/ base member.",
+            "type": "string",
+            "format": "iri"
+          },
+          "rel": {
+            "description": "A similar meaning as the rel attribute on HTML, used to express a machine-readable meaning/type of the (href) link",
+            "type": "string"
+          },
+          "typedescription": {
+            "description": "Absolute URL reference to a extended description for this API entry point.",
+            "type": "string",
+            "format": "url"
+          },
+          "contenttype": {
+            "description": "Content-Type of the - by _href_ - described API entry point. For the current API only one is specified.",
+            "type": "string",
+            "default": "application/vnd.api+json",
+            "const": "application/vnd.api+json"
+          },
+          "templates": {
+            "type": "object",
+            "description": "URI-Template, defining **each** in the URL used varspec variable",
+            "additionalProperties": {
+              "$ref": "./URI-Template.json"
+            }
+          }
+        }
+      }
+    },
+    "context": {
+      "type": "array",
+      "description": "In the API used IRIs and its namespace prefix definitions.",
+      "items": {
+        "type": "object",
+        "required": [
+          "prefix",
+          "iri"
+        ],
+        "properties": {
+          "prefix": {
+            "description": "Defines the namespace prefix as it used in the API (excluding the :).",
+            "type": "string",
+            "format": "string"
+          },
+          "iri": {
+            "description": "Defines the IRI/URL of the namespace prefix.",
+            "type": "string",
+            "format": "url"
+          }
+        }
+      }
+    }
+  }
+}

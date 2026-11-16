@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "nullable": true,
+  "description": "A definition for a device object including:\n- type/ id\n- attributes\n- meta information on the device \n- relationships to other relevant resources\n",
+  "allOf": [
+    {
+      "$ref": "./DeviceTypeAndId.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "attributes",
+        "relationships"
+      ],
+      "properties": {
+        "attributes": {
+          "$ref": "./DeviceItemAttributes.json"
+        },
+        "meta": {
+          "$ref": "./EntityItemMetaInformation.json"
+        },
+        "relationships": {
+          "$ref": "./DeviceItemRelationships.json"
+        }
+      }
+    }
+  ]
+}

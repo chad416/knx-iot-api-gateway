@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "description": "A JSON API `links` member, expressing a `self` member as a (relative) link/reference to an entity.",
+  "required": [
+    "self"
+  ],
+  "properties": {
+    "self": {
+      "type": "string",
+      "format": "url-reference"
+    }
+  }
+}

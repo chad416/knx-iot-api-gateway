@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "description": "A JSON API `links` member, expressing a `related` member as a (relative) URL link/reference to another entity.\nIf the parent member is present/expressed, THEN the `related` and `links` members are required.  \n",
+  "required": [
+    "links"
+  ],
+  "properties": {
+    "links": {
+      "type": "object",
+      "required": [
+        "related"
+      ],
+      "properties": {
+        "related": {
+          "type": "string",
+          "format": "uri-reference"
+        }
+      }
+    }
+  }
+}

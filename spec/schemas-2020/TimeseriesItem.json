@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "description": "A definition for a time series object including:\n- type/ id\n- attributes on the time series\n",
+  "allOf": [
+    {
+      "$ref": "./TimeseriesTypeAndId.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "attributes",
+        "relationships"
+      ],
+      "properties": {
+        "attributes": {
+          "$ref": "./TimeseriesItemAttributes.json"
+        },
+        "relationships": {
+          "$ref": "./TimeseriesItemRelationships.json"
+        }
+      }
+    }
+  ]
+}

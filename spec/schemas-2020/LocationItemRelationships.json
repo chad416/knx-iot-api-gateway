@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "description": "Some references expressing relations to \n- a `parentLocation` member, a relative reference to the parent location of this location\n- a `childLocations` member, a relative reference to all child locations of this location\n- a `locationFunctions` member, a relative reference to all functions included in this location\n - a `locationDevices` member, a relative reference to all devices included in this location\n",
+  "required": [
+    "parentLocation",
+    "childLocations",
+    "locationFunctions"
+  ],
+  "properties": {
+    "parentLocation": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "childLocations": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "locationFunctions": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "locationDevices": {
+      "$ref": "./relatedLinksMember.json"
+    }
+  }
+}

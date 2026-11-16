@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `oAuth2RefreshToken.json`",
+  "required": [
+    "grant_type",
+    "refresh_token"
+  ],
+  "properties": {
+    "grant_type": {
+      "description": "OAuth 2.0 **grant_type** `refresh_token`, to refresh an access token",
+      "type": "string",
+      "const": "refresh_token"
+    },
+    "refresh_token": {
+      "description": "same token as it was generated from the token endpoint as part of the last access token request call (as a note, in this API the `refresh_token` is a mandatory response token, in RFC 6749 it is an optional response token)",
+      "type": "string"
+    }
+  }
+}

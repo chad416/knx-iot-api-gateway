@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "description": "The JSON API meta member, expressing for the entity (such as device, datapoint, ..., location): \n- an array containing one ore more specific entity **type** definitions \n- an URL to additional entity information\n",
+  "properties": {
+    "@type": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "typedescription": {
+      "type": "string",
+      "format": "uri"
+    }
+  }
+}

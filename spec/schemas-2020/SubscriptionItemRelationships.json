@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "description": "A relative reference member to datapoints,installations or a node, included in a specific subscription.\n",
+  "properties": {
+    "subscriptionDatapoints": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "subscriptionInstallations": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "subscriptionNode": {
+      "$ref": "./relatedLinksMember.json"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "description": "A definition for a subscription object including:\n- type/ id, mandatory\n- `attributes` member, describing subscription properties, optional \n- `relationships` member, links to other relevant resources, mandatory\n",
+  "allOf": [
+    {
+      "$ref": "./SubscriptionTypeAndId.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "relationships"
+      ],
+      "properties": {
+        "attributes": {
+          "$ref": "./SubscriptionItemAttributes.json"
+        },
+        "relationships": {
+          "$ref": "./SubscriptionItemRelationships.json"
+        }
+      }
+    }
+  ]
+}

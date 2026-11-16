@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "description": "The JSON API reference member, expressing relations to \n- a `datapointFunctions` member, a relative reference to functions, hosting this datapoint.\n- a `datapointDevice` member, a relative reference to a device, hosting this datapoint.\n- a `datapointProxy` member, a relative reference to a proxy (device), acts as proxy for this datapoint\n- a `datapointSubscriptions` member, a relative reference to all subscriptions where this datapoint is included in\n",
+  "required": [
+    "datapointFunctions"
+  ],
+  "properties": {
+    "datapointFunctions": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "datapointDevice": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "datapointProxy": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "datapointSubscriptions": {
+      "$ref": "./relatedLinksMember.json"
+    }
+  }
+}

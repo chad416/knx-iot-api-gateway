@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "description": "Some references expressing relations to \n- a `functionLocation` member, a relative reference to the location hosting this function\n- a `functionDatapoints` member, a relative reference to the datapoints hosted in this function \n",
+  "required": [
+    "functionLocation",
+    "functionDatapoints"
+  ],
+  "properties": {
+    "functionLocation": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "functionDatapoints": {
+      "$ref": "./relatedLinksMember.json"
+    }
+  }
+}

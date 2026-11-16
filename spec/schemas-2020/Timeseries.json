@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `Timeseries.json`",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "meta": {
+      "$ref": "./ItemInformation.json"
+    },
+    "data": {
+      "$ref": "./TimeseriesItem.json"
+    }
+  }
+}

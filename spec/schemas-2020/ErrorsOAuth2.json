@@ -1,0 +1,40 @@
+{
+  "description": "To the payload corresponding JSON schema file is `ErrorsOAuth2.json`, a single error item, expressed as a JSON object, conform to RFC 7807.\nThe general error description is extended with OAuth2 specific error details.\n",
+  "type": "object",
+  "required": [
+    "title",
+    "status",
+    "error"
+  ],
+  "properties": {
+    "title": {
+      "description": "HTTP status phrase/ error title.",
+      "type": "string"
+    },
+    "status": {
+      "description": "HTTP status code as string, defined by JSON API",
+      "type": "string"
+    },
+    "error": {
+      "description": "In OAuth2 RFC (clause 5.2) specified error types \n",
+      "type": "string",
+      "enum": [
+        "invalid_request",
+        "invalid_client",
+        "invalid_grant",
+        "unauthorized_client",
+        "unsupported_grant_type",
+        "invalid_scope"
+      ]
+    },
+    "error_description": {
+      "description": "Readable OAuth2 error description, embedded in the error response, type string.",
+      "type": "string"
+    },
+    "error_uri": {
+      "description": "Absolute URL reference to to a detailed description of the OAuth2 error, type uri.",
+      "type": "string",
+      "format": "url"
+    }
+  }
+}

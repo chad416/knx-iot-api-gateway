@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "nullable": true,
+  "description": "A definition for a location object including:\n- type/ id\n- attributes\n- meta information on the location \n- relationships to other relevant resources\n",
+  "allOf": [
+    {
+      "$ref": "./LocationTypeAndId.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "attributes",
+        "relationships"
+      ],
+      "properties": {
+        "attributes": {
+          "$ref": "./LocationItemAttributes.json"
+        },
+        "meta": {
+          "$ref": "./EntityItemMetaInformation.json"
+        },
+        "relationships": {
+          "$ref": "./LocationItemRelationships.json"
+        }
+      }
+    }
+  ]
+}

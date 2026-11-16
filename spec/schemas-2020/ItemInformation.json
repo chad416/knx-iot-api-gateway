@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "nodata": {
+      "type": "string",
+      "description": "Expresses a reason why no item is available as part of the response."
+    }
+  }
+}

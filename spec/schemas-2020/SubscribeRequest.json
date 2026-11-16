@@ -1,0 +1,174 @@
+{
+  "type": "object",
+  "description": "To the payload corresponding JSON schema file is `SubscribeRequest.json`",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "type": "object",
+      "required": [
+        "relationships",
+        "type",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "description": "the resource type.",
+          "type": "string",
+          "const": "subscription"
+        },
+        "attributes": {
+          "type": "object",
+          "required": [
+            "url",
+            "secret"
+          ],
+          "properties": {
+            "url": {
+              "description": "HTTPS based callback URL of the notification endpoint.",
+              "type": "string",
+              "format": "url"
+            },
+            "secret": {
+              "description": "Shared secret for secure callbacks (to trust the KNX IoT 3rd Party server).",
+              "type": "string"
+            },
+            "caCert": {
+              "description": "Base64 representation of a PEM encoded certificate (to trust the notification endpoint).",
+              "type": "string",
+              "format": "bytes"
+            },
+            "lifetime": {
+              "description": "Lifetime of the subscription in in seconds (>0).",
+              "type": "integer"
+            }
+          }
+        },
+        "relationships": {
+          "type": "object",
+          "properties": {
+            "subscriptionDatapoints": {
+              "description": "Expresses an array of to be upon subscribed datapoint items or items containing of datapoints, each item including of its id and actual type.",
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "properties": {
+                      "id": {
+                        "description": "Locally unique resource identifier, preferably an UUID.",
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "type": {
+                        "description": "The type of the to be subscribed item.",
+                        "type": "string",
+                        "enum": [
+                          "device",
+                          "datapoint",
+                          "function",
+                          "location"
+                        ]
+                      },
+                      "meta": {
+                        "description": "The subscription notification characteristics, if true it is extended for this (individual) item.",
+                        "type": "object",
+                        "properties": {
+                          "expand": {
+                            "type": "boolean",
+                            "default": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "subscriptionInstallations": {
+              "description": "Expresses an array of to be upon subscribed installation items, each item including of its id and actual type.",
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "properties": {
+                      "id": {
+                        "description": "Locally unique resource identifier, preferably an UUID.",
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "type": {
+                        "description": "The type of the to be subscribed item.",
+                        "type": "string",
+                        "const": "installation"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "subscriptionNode": {
+              "description": "Expresses an object of to be upon subscribed node item, including of its id and actual type.",
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "id"
+                  ],
+                  "properties": {
+                    "id": {
+                      "description": "Locally unique resource identifier, preferably an UUID.",
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "type": {
+                      "description": "The type of the to be subscribed item.",
+                      "type": "string",
+                      "enum": [
+                        "service",
+                        "device"
+                      ]
+                    },
+                    "meta": {
+                      "description": "The subscription notification characteristics, if true it is extended for this (individual) item.",
+                      "type": "object",
+                      "properties": {
+                        "expand": {
+                          "type": "boolean",
+                          "default": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "description": "Some references expressing relations to \n- a `deviceLocation` member, a reference to the location, hosting this device\n- a `deviceDatapoints` member, a relative reference to the datapoints hosted in this device\n",
+  "required": [
+    "deviceLocation",
+    "deviceDatapoints"
+  ],
+  "properties": {
+    "deviceLocation": {
+      "$ref": "./relatedLinksMember.json"
+    },
+    "deviceDatapoints": {
+      "$ref": "./relatedLinksMember.json"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "required": [
+    "title"
+  ],
+  "properties": {
+    "title": {
+      "description": "Represents the name of an entity.",
+      "type": "string"
+    }
+  }
+}

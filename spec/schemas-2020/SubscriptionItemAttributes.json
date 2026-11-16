@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "url": {
+      "description": "HTTPS based callback URL of the notification endpoint.",
+      "type": "string",
+      "format": "url"
+    },
+    "secret": {
+      "description": "Shared secret for secure callbacks (to trust the KNX IoT 3rd Party server).",
+      "type": "string"
+    },
+    "caCert": {
+      "description": "Base64 representation of a PEM encoded certificate (to trust the notification endpoint).",
+      "type": "string",
+      "format": "bytes"
+    },
+    "lifetime": {
+      "description": "Lifetime of the subscription in in seconds (0 = use default server value).",
+      "type": "integer"
+    }
+  }
+}
