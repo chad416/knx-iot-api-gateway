@@ -1,0 +1,2 @@
+# only for scripts/take_screenshots.py (uses the installed Edge browser)
+playwright==1.65.2

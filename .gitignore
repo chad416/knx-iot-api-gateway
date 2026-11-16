@@ -1,9 +1,9 @@
-.venv/
-__pycache__/
 *.pyc
 .pytest_cache/
-node_modules/
-web/dist/
-results/*.tmp
+.venv/
+__pycache__/
 audit.log
+node_modules/
+results/*.tmp
 results/quick/
+web/dist/

@@ -1,0 +1,49 @@
+name: ci
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Unit, contract, scenario and security tests
+        run: python -m pytest -q
+      - name: Results script (short run, same code paths as the full run)
+        run: python scripts/run_all.py --quick
+      - name: Checks on the regenerated numbers
+        run: |
+          python - <<'PY'
+          import json
+          s = json.load(open("results/quick/summary.json"))
+          mv = s["model_validation"]
+          assert abs(mv["formula_telegrams_per_s"] - mv["simulated_telegrams_per_s"]) < 1e-3
+          r = s["race_scan"]
+          assert r["optimistic"]["answered_before_effect_fraction"] == 1.0
+          assert r["confirmed"]["false_confirm_window_ms"] is not None
+          assert r["versioned"]["false_confirm_window_ms"] is None
+          assert s["rmw_scan"]["versioned"]["lost_window_ms"] is None
+          assert s["rmw_scan"]["confirmed"]["lost_width_ms"] > s["rmw_scan"]["optimistic"]["lost_width_ms"]
+          b = s["scene_burst"]
+          assert b["unpaced_addr_1.1.250"]["wall_ms"]["p50"] > 3 * b["polite_addr_1.1.250"]["wall_ms"]["p50"]
+          print("checks passed")
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Web client type check and build
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: results-quick
+          path: results/quick

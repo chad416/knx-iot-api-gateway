@@ -79,7 +79,7 @@ class Runtime:
                  audit_path: Optional[str] = None, manual_time: bool = False) -> None:
         self.sched = Scheduler()
         self.inst = Installation(self.sched, seed=seed, **(inst or {}))
-        cfg = dict(polite=True, pace_util=1.0)
+        cfg = dict(polite=True, pace_util=0.4)        # chosen bus access, DOSSIER section 6.3
         cfg.update(gw or {})
         self.core = GatewayCore(self.inst, GatewayConfig(design=design, **cfg))
         self.core.prime()

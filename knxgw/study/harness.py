@@ -227,7 +227,7 @@ class Observer:
     def classify_writes(self) -> dict:
         """What each acknowledged write was worth, judged against the device."""
         truth = self.w.inst.truth
-        c = {"writes": 0, "items": 0, "ok": 0, "accepted": 0, "conflict": 0, "rate": 0, "full": 0,
+        c = {"writes": 0, "items": 0, "ok_items": 0, "ok": 0, "accepted": 0, "conflict": 0, "rate": 0, "full": 0,
              "failed": 0, "unanswered": 0,
              "ack_never_applied": 0, "ack_never_applied_fast": 0, "ack_before_effect": 0, "ack_untrue_at_response": 0,
              "failed_but_applied": 0, "conflict_but_applied": 0, "stale_intent": 0,
@@ -264,6 +264,7 @@ class Observer:
                             else:
                                 c["stale_intent"] += 1
                 if r.status == "ok":
+                    c["ok_items"] += 1
                     if app is None:
                         c["ack_never_applied"] += 1
                         c["ack_never_applied_fast"] += d.kind in FAST

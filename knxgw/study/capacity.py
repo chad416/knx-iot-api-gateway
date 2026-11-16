@@ -34,6 +34,7 @@ SHARING = {
     "paced_33_addr_1.1.250": dict(pace_util=1 / 3, addr=ia(1, 1, 250)),
     "paced_25_addr_1.1.250": dict(pace_util=0.25, addr=ia(1, 1, 250)),
     "polite_addr_1.1.250": dict(pace_util=1.0, addr=ia(1, 1, 250), polite=True),
+    "polite_capped_addr_1.1.250": dict(pace_util=0.4, addr=ia(1, 1, 250), polite=True),
 }
 
 
@@ -138,7 +139,7 @@ def poll_everything(periods_s: list[float], read_through: bool, seconds: float =
     the bus never sees it. With read-through every read is a GroupValueRead plus its response."""
     out = []
     for period in periods_s:
-        w = World("confirmed", seed, dict(read_through=read_through, queue_max=64, pace_util=1.0, polite=True),
+        w = World("confirmed", seed, dict(read_through=read_through, queue_max=64, pace_util=0.4, polite=True),
                   {"sensors": True})
         inst = w.inst
         bad = SimClient(w, "poller", net_ms=60.0, subscribe=False)
@@ -183,7 +184,7 @@ def poll_everything(periods_s: list[float], read_through: bool, seconds: float =
 
 def flooding_writer(fair: bool, limited: bool, seconds: float = 30.0, seed: int = 1) -> dict:
     """An integration writes 100 times per second. A normal app writes once per second."""
-    cfg = dict(queue_max=64, pace_util=1.0, polite=True, fair=fair)
+    cfg = dict(queue_max=64, pace_util=0.4, polite=True, fair=fair)
     cfg.update(dict(client_rate=10.0, client_burst=40) if limited else dict(client_rate=1e6, client_burst=10**6))
     w = World("confirmed", seed, cfg, {"sensors": True})
     inst = w.inst

@@ -1,0 +1,13 @@
+# gateway
+fastapi==0.163.1
+uvicorn[standard]==0.54.0
+websockets==17.4
+# studies and figures
+numpy==2.5.5
+matplotlib==3.11.2
+# tests
+pytest==9.2.0
+httpx==0.28.1
+jsonschema==4.26.0
+referencing==0.37.0
+PyYAML==6.0.3

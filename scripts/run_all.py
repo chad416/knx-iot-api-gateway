@@ -29,7 +29,7 @@ from knxgw.study import capacity, plots  # noqa: E402
 from knxgw.study.consistency import PROFILES, race_scan, rmw_scan, run_mixed  # noqa: E402
 
 LOSS = dict(p_rx_miss=1e-4, p_frame_corrupt=1e-3)       # assumption A4, swept below
-POLICY = dict(polite=True, pace_util=1.0)               # bus sharing used for all three designs
+POLICY = dict(polite=True, pace_util=0.4)               # chosen bus access (DOSSIER 6.3), used for all designs
 
 
 def model_validation() -> dict:
@@ -140,7 +140,7 @@ def main() -> None:
         }
 
     step("lost-update scan")
-    rt = [float(x) for x in range(-300, 801, 50 if q else 25)]
+    rt = [float(x) for x in range(-800, 801, 50 if q else 25)]
     S["rmw_scan"] = {}
     for name, design, gw in (("optimistic", "optimistic", POLICY), ("confirmed", "confirmed", POLICY),
                              ("versioned", "versioned", POLICY),
@@ -151,7 +151,7 @@ def main() -> None:
                                "lost_width_ms": round(sum(r["lost_silent"] / r["n"] for r in rows) * (rt[1] - rt[0]), 0)}
 
     step("mixed traffic, three designs")
-    hours = {"office": 20.0 if q else 300.0, "contended": 5.0 if q else 60.0}
+    hours = {"office": 20.0 if q else 150.0, "contended": 5.0 if q else 40.0}
     S["mixed"] = {}
     raw = {}
     for profile in ("office", "contended"):
@@ -167,7 +167,7 @@ def main() -> None:
     for p in (0.0, 1e-4, 1e-3, 1e-2):
         S["loss_sensitivity"][str(p)] = {}
         for design in ("optimistic", "confirmed", "versioned"):
-            r = run_mixed(design, "contended", 3.0 if q else 10.0, seed=2, gw=POLICY,
+            r = run_mixed(design, "contended", 3.0 if q else 6.0, seed=2, gw=POLICY,
                           inst=dict(p_rx_miss=p, p_frame_corrupt=1e-3))
             w = r["writes"]
             S["loss_sensitivity"][str(p)][design] = {
@@ -181,7 +181,7 @@ def main() -> None:
     step("refresh period trade")
     S["refresh_trade"] = []
     for period in (0.0, 600.0, 120.0, 30.0, 10.0):
-        r = run_mixed("versioned", "contended", 3.0 if q else 10.0, seed=2,
+        r = run_mixed("versioned", "office", 5.0 if q else 30.0, seed=2,
                       gw=dict(POLICY, refresh_period_s=period), inst=dict(p_rx_miss=1e-3, p_frame_corrupt=1e-3))
         S["refresh_trade"].append({
             "refresh_period_s": period, "bus_load": r["bus"]["load_fraction"],
@@ -193,7 +193,7 @@ def main() -> None:
     step("actuator reaction time sensitivity")
     S["reaction_sensitivity"] = []
     for lo, hi in ((2.0, 5.0), (8.0, 20.0), (30.0, 60.0)):
-        r = run_mixed("confirmed", "contended", 2.0 if q else 5.0, seed=3, gw=POLICY, inst=dict(LOSS, react_ms=(lo, hi)))
+        r = run_mixed("confirmed", "contended", 2.0 if q else 4.0, seed=3, gw=POLICY, inst=dict(LOSS, react_ms=(lo, hi)))
         S["reaction_sensitivity"].append({"react_ms": [lo, hi],
                                           "confirmed_answer_ms": r["writes"]["latency_gateway_ms"]})
 
@@ -204,7 +204,8 @@ def main() -> None:
     rates = [5.0, 15.0, 20.0, 30.0] if q else [2.0, 5.0, 10.0, 15.0, 18.0, 20.0, 22.0, 25.0, 30.0, 40.0]
     S["rate_sweep"] = {}
     for name, gw in (("unpaced_addr_1.1.250", dict(pace_util=1.0)), ("paced_50_addr_1.1.250", dict(pace_util=0.5)),
-                     ("polite_addr_1.1.250", dict(polite=True, pace_util=1.0))):
+                     ("polite_addr_1.1.250", dict(polite=True, pace_util=1.0)),
+                     ("polite_capped_addr_1.1.250", dict(polite=True, pace_util=0.4))):
         S["rate_sweep"][name] = capacity.write_rate_sweep(rates, seconds=20.0 if q else 60.0, gw=gw)
 
     step("capacity: polling and flooding")

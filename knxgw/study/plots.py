@@ -7,6 +7,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.ticker  # noqa: E402
 import numpy as np  # noqa: E402
 
 SURFACE, INK, INK2, MUTED, GRID, AXIS = "#fcfcfb", "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
@@ -24,7 +25,7 @@ def _style(ax, xlabel="", ylabel="", title=""):
         ax.spines[s].set_linewidth(0.8)
     ax.grid(True, color=GRID, linewidth=0.6)
     ax.set_axisbelow(True)
-    ax.tick_params(colors=MUTED, labelsize=8.5, length=3, width=0.8)
+    ax.tick_params(which="both", colors=MUTED, labelsize=8.5, length=3, width=0.8)
     ax.set_xlabel(xlabel, color=INK2, fontsize=9.5)
     ax.set_ylabel(ylabel, color=INK2, fontsize=9.5)
     if title:
@@ -118,7 +119,8 @@ def overload(S, out_dir):
     fig, (a, b) = _fig(10.4, 4.3, 1, 2)
     series = (("unpaced_addr_1.1.250", ORANGE, "sends as fast as it can"),
               ("paced_50_addr_1.1.250", BLUE, "paced to 50 % of the bus"),
-              ("polite_addr_1.1.250", AQUA, "polite: waits 3 bit times longer"))
+              ("polite_addr_1.1.250", AQUA, "polite: waits 3 bit times longer"),
+              ("polite_capped_addr_1.1.250", YELLOW, "polite and capped at 40 % of the bus"))
     for key, col, lab in series:
         rows = S["rate_sweep"][key]
         x = [r["offered_per_s"] for r in rows]
@@ -153,7 +155,8 @@ def scene_burst(S, out_dir):
              "paced_50_addr_1.1.250": "paced 50 %, address 1.1.250",
              "paced_33_addr_1.1.250": "paced 33 %, address 1.1.250",
              "paced_25_addr_1.1.250": "paced 25 %, address 1.1.250",
-             "polite_addr_1.1.250": "polite (+3 bit times), address 1.1.250"}
+             "polite_addr_1.1.250": "polite (+3 bit times), address 1.1.250",
+             "polite_capped_addr_1.1.250": "polite, capped at 40 %, address 1.1.250"}
     y = np.arange(len(keys))[::-1]
     hgt = 0.34
     for off, part, col, lab in ((hgt / 2 + 0.02, "wall_odd_addr_ms", BLUE, "wall switch with odd device number (1.1.31, .33 ...)"),
@@ -189,7 +192,7 @@ def lost_update(S, out_dir):
     ax.set_yticks([0, 0.5, 1])
     _style(ax, "second client starts this many ms after the first (both: read brightness, add 20 %, write)",
            "share of runs with one update lost", "Two API clients step the same dimmer: when is an update lost without anyone being told?")
-    _legend(ax, loc="center right")
+    _legend(ax, loc="upper right", bbox_to_anchor=(1.0, 0.9))
     _save(fig, out_dir, "fig5_lost_update_window.png")
 
 
@@ -203,6 +206,8 @@ def refresh_trade(S, out_dir):
         lab = "no refresh" if r["refresh_period_s"] == 0 else f"every {r['refresh_period_s']:.0f} s"
         ax.annotate(lab, (xx, yy), textcoords="offset points", xytext=(7, 6), fontsize=8.5, color=INK2)
     ax.set_yscale("log")
+    ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%g"))
+    ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     _style(ax, "telegrams per second on the bus (traffic + status read-back)",
            "longest time the cache was wrong, s (log)",
            "Read-back of all 37 actuator states: what a staleness bound costs")
