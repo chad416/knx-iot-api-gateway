@@ -84,6 +84,10 @@ class Runtime:
         self.core = GatewayCore(self.inst, GatewayConfig(design=design, **cfg))
         self.core.prime()
         self.speed, self.demo, self.manual_time = speed, demo, manual_time
+        # manual_time (tests): the clock is simulated time itself; `speed` only sets how far each
+        # pump step moves it. Otherwise simulated time follows the wall clock, scaled by `speed`.
+        self.tscale = 1.0 if manual_time else speed
+        self.pump_step_s = 0.004 * speed
         self.t0_wall = time.time()
         self._mono0 = time.monotonic()
         self.auth = AuthService(self.inst.locations_under, lambda i: i in self.inst.locations, self.clock)
@@ -95,10 +99,14 @@ class Runtime:
         self.handler_s: list[float] = []
 
     def clock(self) -> float:
-        return self.t0_wall + self.sched.now / 1e9 / self.speed if self.manual_time else time.time()
+        return self.t0_wall + self.sched.now / 1e9 if self.manual_time else time.time()
 
     def wall(self, t_ns: int) -> float:
-        return self.t0_wall + t_ns / 1e9 / self.speed
+        return self.t0_wall + t_ns / 1e9 / self.tscale
+
+    def freeze(self) -> None:
+        """Tests: simulated time moves only through advance()."""
+        self.pump_step_s = 0.0
 
     def sync(self) -> None:
         if not self.manual_time:
@@ -112,7 +120,7 @@ class Runtime:
         while True:
             if self.manual_time:
                 # tests: simulated time moves in fixed steps, independent of the wall clock
-                self.sched.run_until(self.sched.now + int(0.004e9 * self.speed))
+                self.sched.run_until(self.sched.now + int(self.pump_step_s * 1e9))
             else:
                 self.sync()
             self.notifier.flush()
@@ -138,7 +146,7 @@ class Runtime:
             "@type": d.tags,
             "gw:version": s["version"],
             "gw:confirmedAt": None if s["confirmed_at"] is None else iso(self.wall(s["confirmed_at"])),
-            "gw:ageMs": None if s["age_ns"] is None else round(s["age_ns"] / 1e6 / self.speed, 1),
+            "gw:ageMs": None if s["age_ns"] is None else round(s["age_ns"] / 1e6 / self.tscale, 1),
             "gw:source": s["source"],
         }
         if self.core.cfg.design == "versioned":
@@ -253,7 +261,7 @@ def create_app(rt: Runtime) -> FastAPI:
         fut: asyncio.Future = asyncio.get_running_loop().create_future()
         core.read(p.client_id, [d.id for d in dps], lambda snap: fut.done() or fut.set_result(snap))
         try:
-            snap = await asyncio.wait_for(fut, 3.0 + 1.0 / rt.speed)
+            snap = await asyncio.wait_for(fut, 3.0 + 1.0 / rt.tscale)
         except asyncio.TimeoutError:
             raise ApiError(504, "Gateway Timeout", "state could not be read in time") from None
         return [rt.dp_item(d, s) for d, s in zip(dps, snap)]
@@ -442,7 +450,7 @@ def create_app(rt: Runtime) -> FastAPI:
         fut: asyncio.Future = asyncio.get_running_loop().create_future()
         core.write(p.client_id, items, lambda res: fut.done() or fut.set_result(res))
         try:
-            res: BatchResult = await asyncio.wait_for(fut, 5.0 + 2.0 / rt.speed)
+            res: BatchResult = await asyncio.wait_for(fut, 5.0 + 2.0 / rt.tscale)
         except asyncio.TimeoutError:
             rt.audit.write(p.client_id, "write", log, "timeout")
             raise ApiError(504, "Gateway Timeout", "no answer from the bus") from None
@@ -456,7 +464,7 @@ def create_app(rt: Runtime) -> FastAPI:
             raise ApiError(409, "Conflict", res.detail, meta=meta)
         if res.status in ("rate", "full"):
             raise ApiError(429, "Too Many Requests", res.detail,
-                           {"Retry-After": str(max(1, int(res.retry_after_s / rt.speed + 0.999)))})
+                           {"Retry-After": str(max(1, int(res.retry_after_s / rt.tscale + 0.999)))})
         raise ApiError(504, "Gateway Timeout", res.detail, meta=meta)
 
     @app.get(BASE + "/datapoints/{dp_id}")

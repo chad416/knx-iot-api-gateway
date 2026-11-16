@@ -11,6 +11,7 @@ DPT 9 (2 octet float) uses value = 0.01 * M * 2^E with a 4 bit exponent and a
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -36,10 +37,10 @@ class DPT:
             if s not in self.enum:
                 raise ValueError(f"value must be one of {list(self.enum)}")
             return self.enum.index(s) == 0 if self.id.startswith("1.") else s
-        try:
-            v = float(s)
-        except ValueError:
-            raise ValueError("value is not a number") from None
+        # plain ASCII decimal only: float() would also take "1e400", "nan", " 5" and other scripts' digits
+        if not _NUM.fullmatch(s):
+            raise ValueError("value is not a plain decimal number")
+        v = float(s)
         if math.isnan(v) or math.isinf(v):
             raise ValueError("value is not a finite number")
         if self.minimum is not None and v < self.minimum:
@@ -63,6 +64,9 @@ class DPT:
                 return self.enum[0] if raw else self.enum[1]
             return str(raw)
         return f"{raw:g}"
+
+
+_NUM = re.compile(r"-?[0-9]{1,7}(\.[0-9]{1,4})?", re.ASCII)
 
 
 def encode_dpt9(v: float) -> int:
